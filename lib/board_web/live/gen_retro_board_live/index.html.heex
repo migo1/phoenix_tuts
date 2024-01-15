@@ -1,0 +1,41 @@
+<.header>
+  Listing Retro boards
+  <:actions>
+    <.link patch={~p"/retro_boards/new"}>
+      <.button>New Retro board</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="retro_boards"
+  rows={@streams.retro_boards}
+  row_click={fn {_id, retro_board} -> JS.navigate(~p"/retro_boards/#{retro_board}") end}
+>
+  <:col :let={{_id, retro_board}} label="Title"><%= retro_board.title %></:col>
+  <:action :let={{_id, retro_board}}>
+    <div class="sr-only">
+      <.link navigate={~p"/retro_boards/#{retro_board}"}>Show</.link>
+    </div>
+    <.link patch={~p"/retro_boards/#{retro_board}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, retro_board}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: retro_board.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="retro_board-modal" show on_cancel={JS.patch(~p"/retro_boards")}>
+  <.live_component
+    module={BoardWeb.RetroBoardLive.FormComponent}
+    id={@retro_board.id || :new}
+    title={@page_title}
+    action={@live_action}
+    retro_board={@retro_board}
+    patch={~p"/retro_boards"}
+  />
+</.modal>

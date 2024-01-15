@@ -18,6 +18,13 @@ defmodule BoardWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+    # live "/retro_boards", RetroBoardLive.Index, :index
+    # live "/retro_boards/new", RetroBoardLive.Index, :new
+    # live "/retro_boards/:id/edit", RetroBoardLive.Index, :edit
+
+    # live "/retro_boards/:id", RetroBoardLive.Show, :show
+    # live "/retro_boards/:id/show/edit", RetroBoardLive.Show, :edit
+    live "/myboards", RetroBoardLive
   end
 
   # Other scopes may use custom stacks.
